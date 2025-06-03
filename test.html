@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <label>masukan angak</label>
+  <input type="text" id="Id_input">
+  <button id="Tampilkan">enter</button>
+  <p id="hasil"></p>
+</body>
+</html>
+<script>
+  document.getElementById("Tampilkan").addEventListener("click",()=>{
+    let hasil = document.getElementById("Id_input").value;
+
+    document.getElementById("hasil").innerHTML = hasil;
+  }
+  )
+
+  document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    alert("Anda sedang online atau kembali ke tab ini");
+  }
+});
+
+</script>

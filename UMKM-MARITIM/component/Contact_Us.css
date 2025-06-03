@@ -1,0 +1,85 @@
+*{
+    color: white;
+}
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #183d5d;
+  color: white;
+  justify-content: center;
+}
+
+.container {
+  max-width: 100%;
+  text-align: center;
+  padding: 20px 0;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: white;
+}
+
+.image-box {
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  margin-bottom: 100px;
+
+}
+
+.image-box img {
+  width: 90%;
+  height: auto;
+  display: block;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  direction: rtl; 
+  margin-right: 60px;
+
+}
+
+.contact-form label {
+   margin-left: 60px;
+  align-self: flex-end;
+  text-align: left;
+  width: 100%;
+}
+
+.contact-form input,
+.contact-form textarea {
+  direction: ltr;
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  max-width: 1140px;
+}
+
+.contact-form textarea {
+  resize: none;
+  height: 100px;
+}
+
+.contact-form button {
+  padding: 10px;
+  max-width: 100px;
+  background-color: #41e268;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  color: black;
+  transition: background-color 0.3s;
+}
+
+.contact-form button:hover {
+  background-color: #36c057;
+}
