@@ -7,7 +7,11 @@
     <title>Contact Us</title>
     <link rel="stylesheet" href="./component/Contact_Us.css">
 </head>
-
+<style>
+*{
+    color: black;
+}
+    </style>
 <body>
     <?php include './component/header.php'; ?>
     <div class="container">
@@ -16,11 +20,11 @@
             <img src="./component/Gallery/Abon.png" alt="Food" />
         </div>
         <form class="contact-form">
-            <label>Name</label>
+            <label style="color:white">Name</label>
             <input type="text" placeholder="Name" required>
-            <label>Email</label>
+            <label style="color:white">Email</label>
             <input type="email" placeholder="Email" required>
-            <label>Pesan</label>
+            <label style="color:white">Pesan</label>
             <textarea placeholder="Reason" rows="5" required></textarea>
             <button type="submit">SEND</button>
         </form>
