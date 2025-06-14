@@ -15,15 +15,15 @@
         }
 
         .container_utama {
-          
+
             width: 100%;
             min-height: 400px;
             background-color: white;
-          
+
             border-radius: 10px;
             padding: 20px;
             margin: 20px auto;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .product-detail {
@@ -155,7 +155,7 @@
         }
 
         .best-seller-container {
-       
+
             background-color: white;
             border-radius: 15px;
             padding: 40px 30px;
@@ -171,7 +171,7 @@
             left: 0;
             right: 0;
             height: 4px;
-           
+
         }
 
         .best-seller-title {
@@ -399,15 +399,20 @@
                         
                         
                         
-                        <div class="product-actions">
-                            <a href="checkout.php?id=${product.id}" class="btn btn-success">
-                                Beli Sekarang
-                            </a>
-                        
-                            <button class="btn btn-secondary" onclick="shareProduct('${product.nama}', '${product.id}')">
-                                Bagikan
-                            </button>
-                        </div>
+                   <div class="product-actions">
+    <a href="checkout.php?id=${product.id}" class="btn btn-success">
+        Beli Sekarang
+    </a>
+
+    <button class="btn btn-primary" onclick="addToCart(${product.id}, '${product.nama}', ${product.harga}, '${product.gambar}')">
+        Tambah ke Keranjang
+    </button>
+
+    <button class="btn btn-secondary" onclick="shareProduct('${product.nama}', '${product.id}')">
+        Bagikan
+    </button>
+</div>
+
                     </div>
                 </div>
             `;
@@ -428,13 +433,13 @@
             return new Intl.NumberFormat('id-ID').format(price);
         }
 
-       
-    
+
+
         // Bagikan produk
         function shareProduct(productName, productId) {
             const url = window.location.href;
             const text = `Lihat produk ${productName} dari UMKM Maritim: ${url}`;
-            
+
             if (navigator.share) {
                 navigator.share({
                     title: productName,
@@ -447,6 +452,27 @@
                     alert('Link produk berhasil disalin ke clipboard!');
                 });
             }
+        }
+
+        function addToCart(id, nama, harga, gambar) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            // Cek apakah produk sudah ada
+            const existing = cart.find(item => item.id === id);
+            if (existing) {
+                existing.jumlah += 1;
+            } else {
+                cart.push({
+                    id,
+                    nama,
+                    harga,
+                    gambar,
+                    jumlah: 1
+                });
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert(`Produk "${nama}" ditambahkan ke keranjang.`);
         }
 
         // Muat detail produk saat halaman dimuat

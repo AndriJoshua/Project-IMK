@@ -5,7 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Check Out - UMKM Maritim</title>
     <link rel="stylesheet" href="./component/checkout.css">
+    <style>
+        .error-message {
+            color: #ff0000;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .input-error {
+            border: 1px solid #ff0000 !important;
+        }
+    </style>
 </head>
+<style>
+    .btn-outline {
+    background: white;
+    border: 2px solid #27ae60;
+    color: #27ae60;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.btn-outline:hover {
+    background: #27ae60;
+    color: white;
+}
+
+    </style>
 <body>
     <?php include './component/header.php'; ?>
     <div class="container">
@@ -104,12 +131,14 @@
                         <div class="form-section">
                             <div class="form-group">
                                 <label for="email">Masukan email</label>
-                                <input type="email" id="email" required>
+                                <input type="email" id="email" onblur="validateInput('email')" required>
+                                <span class="error-message" id="email-error">Format email tidak valid</span>
                             </div>
 
                             <div class="form-group">
                                 <label for="phone">No.Hp</label>
-                                <input type="tel" id="phone" required>
+                                <input type="tel" id="phone" onblur="validateInput('phone')" required>
+                                <span class="error-message" id="phone-error">Format nomor telepon tidak valid</span>
                             </div>
 
                             <div class="form-group">
@@ -124,9 +153,11 @@
                         </div>
 
                         <div class="button-group">
-                            <button class="btn btn-secondary" onclick="goBack()">KEMBALI</button>
-                            <button class="btn btn-primary" onclick="processOrder()">PESAN SEKARANG</button>
-                        </div>
+    <button class="btn btn-secondary" onclick="goBack()">KEMBALI</button>
+    <button class="btn btn-outline" onclick="addToCart()">TAMBAH KE KERANJANG</button>
+    <button class="btn btn-primary" onclick="processOrder()">PESAN SEKARANG</button>
+</div>
+
                     </div>
                 </div>
             `;
@@ -160,22 +191,43 @@
             document.getElementById('total-price').textContent = `Rp ${formatPrice(totalPrice)}`;
         }
 
-        // Proses pemesanan
+        // Validasi input
+        function validateInput(type) {
+    const input = document.getElementById(type);
+    const errorElement = document.getElementById(`${type}-error`);
+    let isValid = true;
+
+    if (type === 'email') {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        isValid = emailRegex.test(input.value);
+    } else if (type === 'phone') {
+        const phoneRegex = /^(\+62|62|0)8[1-9][0-9]{6,9}$/;
+        isValid = phoneRegex.test(input.value);
+    }
+
+    if (!isValid) {
+        input.classList.add('input-error');
+        errorElement.style.display = 'block';
+    } else {
+        input.classList.remove('input-error');
+        errorElement.style.display = 'none';
+    }
+
+    return isValid;
+}
+
+// Proses pemesanan
         function processOrder() {
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const name = document.getElementById('name').value;
-            const address = document.getElementById('address').value;
+            const emailValid = validateInput('email');
+    const phoneValid = validateInput('phone');
+    const name = document.getElementById('name').value;
+    const address = document.getElementById('address').value;
 
-            if (!email || !phone || !name || !address) {
-                alert('Mohon lengkapi semua data yang diperlukan!');
-                return;
-            }
-
-            if (!validateEmail(email)) {
-                alert('Format email tidak valid!');
-                return;
-            }
+    if (!emailValid || !phoneValid || !name || !address) {
+        if (!name) alert('Mohon isi nama Anda');
+        if (!address) alert('Mohon isi alamat Anda');
+        return;
+    }
 
             // Data pesanan
             const orderData = {
@@ -208,12 +260,6 @@
             }
         }
 
-        // Validasi email
-        function validateEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
-
         // Format harga
         function formatPrice(price) {
             return new Intl.NumberFormat('id-ID').format(price);
@@ -228,6 +274,27 @@
             error.style.display = 'block';
             error.textContent = message;
         }
+        function addToCart() {
+    const quantity = parseInt(document.getElementById('quantity').value) || 1;
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Cek apakah produk sudah ada di keranjang
+    const existing = cart.find(item => item.id === currentProduct.id);
+    if (existing) {
+        existing.jumlah += quantity;
+    } else {
+        cart.push({
+            id: currentProduct.id,
+            nama: currentProduct.nama,
+            harga: currentProduct.harga,
+            gambar: currentProduct.gambar,
+            jumlah: quantity
+        });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert('Produk berhasil ditambahkan ke keranjang!');
+}
 
         // Muat data produk saat halaman dimuat
         document.addEventListener('DOMContentLoaded', loadProductForCheckout);

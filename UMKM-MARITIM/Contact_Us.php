@@ -19,7 +19,7 @@
         <div class="image-box">
             <img src="./component/Gallery/Abon.png" alt="Food" />
         </div>
-        <form class="contact-form">
+        <form action="https://formsubmit.co/andriprofsgo@gmail.com" method="POST" class="contact-form">
             <label style="color:white">Name</label>
             <input type="text" placeholder="Name" required>
             <label style="color:white">Email</label>
